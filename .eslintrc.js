@@ -2,18 +2,16 @@ module.exports = {
   parser: "@typescript-eslint/parser",
   parserOptions: {
     project: "tsconfig.json",
-    tsconfigRootDir : __dirname, 
+    tsconfigRootDir: __dirname,
     sourceType: "module",
   },
-  plugins: [
-    "@typescript-eslint/eslint-plugin",
-    "unused-imports"
-  ],
+  plugins: ["@typescript-eslint/eslint-plugin", "unused-imports"],
   extends: [
     "plugin:@typescript-eslint/recommended",
     "plugin:prettier/recommended",
     "plugin:@typescript-eslint/recommended-requiring-type-checking",
     "plugin:@typescript-eslint/strict",
+    "prettier",
   ],
   root: true,
   env: {
@@ -65,51 +63,52 @@ module.exports = {
     "no-return-await": "off",
     "@typescript-eslint/return-await": "error",
     "@typescript-eslint/no-misused-promises": "off",
-    "eqeqeq": ["error", "always"],
-    "no-console": "error",
+    eqeqeq: ["error", "always"],
     "@typescript-eslint/unified-signatures": "off",
-    "@typescript-eslint/naming-convention": ["error",
+    "@typescript-eslint/naming-convention": [
+      "error",
       {
-        selector: 'default',
-        format: ['camelCase'],
+        selector: "default",
+        format: ["camelCase"],
       },
       {
-        selector: 'variable',
-        format: ['camelCase', 'UPPER_CASE', 'PascalCase'],
-        leadingUnderscore: 'allow',
+        selector: "variable",
+        format: ["camelCase", "UPPER_CASE", "PascalCase"],
+        leadingUnderscore: "allow",
       },
       {
-        selector: 'parameter',
-        format: ['camelCase'],
-        leadingUnderscore: 'allow',
+        selector: "parameter",
+        format: ["camelCase"],
+        leadingUnderscore: "allow",
       },
       {
-        selector: 'memberLike',
-        modifiers: ['private'],
-        format: ['camelCase', "UPPER_CASE", "snake_case"],
-        leadingUnderscore: 'allow',
+        selector: "memberLike",
+        modifiers: ["private"],
+        format: ["camelCase", "UPPER_CASE", "snake_case"],
+        leadingUnderscore: "allow",
       },
       {
-        selector: 'memberLike',
-        modifiers: ['public'],
-        format: ['camelCase', "UPPER_CASE", "snake_case", "PascalCase"],
+        selector: "memberLike",
+        modifiers: ["public"],
+        format: ["camelCase", "UPPER_CASE", "snake_case", "PascalCase"],
       },
       {
-        selector: 'typeLike',
-        format: ['PascalCase'],
+        selector: "typeLike",
+        format: ["PascalCase"],
       },
       {
         selector: "enumMember",
-        format: ["UPPER_CASE"]
+        format: ["UPPER_CASE"],
       },
       {
         selector: "objectLiteralMethod",
-        format: ["camelCase", "PascalCase"]
+        format: ["camelCase", "PascalCase"],
       },
       {
         selector: "objectLiteralProperty",
-        format: ["camelCase", "UPPER_CASE", "PascalCase", "snake_case"]
-      }
-    ]
+        format: ["camelCase", "UPPER_CASE", "PascalCase", "snake_case"],
+      },
+    ],
   },
 };
+
