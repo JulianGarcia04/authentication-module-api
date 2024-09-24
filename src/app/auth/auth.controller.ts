@@ -78,11 +78,9 @@ export class AuthController {
   ): Promise<AuthLoginByVerifyCodeResponse> {
     const { code, token } = body;
 
-    const payload = this.jwtService.verifyToken(token);
-
-    if (!payload) {
+    const payload = await this.jwtService.verifyToken(token).catch(() => {
       throw new HttpException("Token exprired", HttpStatus.UNAUTHORIZED);
-    }
+    });
 
     const checkPayload = AuthLoginByVerifyCodeDesencryptPayload.safeParse(payload);
 

@@ -1,4 +1,5 @@
 import { createZodDto } from "@anatine/zod-nestjs";
+import { Timestamp } from "@google-cloud/firestore";
 import { z } from "zod";
 
 export const UserSchema = z.object({
@@ -8,7 +9,15 @@ export const UserSchema = z.object({
   email: z.string().email(),
   birthdate: z.date().optional(),
   password: z.string(),
-  createAt: z.date().default(new Date()),
+  createAt: z
+    .union([z.date().default(new Date()), z.instanceof(Timestamp)])
+    .transform((val) => {
+      if (val instanceof Timestamp) {
+        return val.toDate();
+      }
+      return val;
+    })
+    .pipe(z.date()),
   isDelete: z.boolean().default(false),
 });
 

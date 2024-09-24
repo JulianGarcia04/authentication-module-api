@@ -12,6 +12,7 @@ import {
   HttpStatus,
   Delete,
   Query,
+  HttpCode,
 } from "@nestjs/common";
 
 import { UserDto, UpdateUserDto, FindUsersDto, type User } from "./users.schema";
@@ -74,6 +75,7 @@ export class UsersController {
   }
 
   @Post("create")
+  @HttpCode(202)
   public async create(@Body() body: UserDto): Promise<string> {
     const getUsers = await this.usersService.find(
       body.phone

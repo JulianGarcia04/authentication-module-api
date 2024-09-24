@@ -24,13 +24,16 @@ export class JwtService {
     return sign(payload, secret, opt);
   }
 
-  public verifyToken(token: string): string {
-    const secret = this.configService.get<string>("JWT_SECRET");
+  public verifyToken(token: string): Promise<string> {
+    return new Promise((res, rej) => {
+      const secret = this.configService.get<string>("JWT_SECRET");
 
-    if (!secret) {
-      throw new Error("Secret does not exists");
-    }
+      if (!secret) {
+        rej("Secret does not exists");
+        return;
+      }
 
-    return String(verify(token, secret));
+      res(String(verify(token, secret)));
+    });
   }
 }
