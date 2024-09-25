@@ -36,13 +36,19 @@ export class AuthController {
       throw new HttpException("User not found by email", HttpStatus.NOT_FOUND);
     }
 
-    const user = await this.usersMapper.parseAsync(checkUser[0]).catch((err) => {
-      console.error("Zod error: ", err);
-      throw new HttpException(
-        `User with id ${checkUser[0].id} was find but the data is bad`,
-        HttpStatus.NOT_ACCEPTABLE,
-      );
-    });
+    console.log(checkUser);
+
+    const currUserData = checkUser[0];
+
+    const user = await this.usersMapper
+      .parseAsync({ ...currUserData.data, id: currUserData.id })
+      .catch((err) => {
+        console.error("Zod error: ", err);
+        throw new HttpException(
+          `User with id ${checkUser[0].id} was find but the data is bad`,
+          HttpStatus.NOT_ACCEPTABLE,
+        );
+      });
 
     const isCorrectPassword = password ? this.bcryptService.compare(password, user.password) : true;
 
@@ -82,6 +88,8 @@ export class AuthController {
       throw new HttpException("Token exprired", HttpStatus.UNAUTHORIZED);
     });
 
+    console.log(JSON.stringify({ payload }));
+
     const checkPayload = AuthLoginByVerifyCodeDesencryptPayload.safeParse(payload);
 
     if (!checkPayload.success) {
@@ -120,6 +128,8 @@ export class AuthController {
         expiresIn: 60 * 60,
       },
     );
+
+    console.log(user);
 
     return {
       authToken,
