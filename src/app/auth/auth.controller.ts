@@ -88,8 +88,6 @@ export class AuthController {
       throw new HttpException("Token exprired", HttpStatus.UNAUTHORIZED);
     });
 
-    console.log(JSON.stringify({ payload }));
-
     const checkPayload = AuthLoginByVerifyCodeDesencryptPayload.safeParse(payload);
 
     if (!checkPayload.success) {

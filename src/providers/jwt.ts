@@ -2,7 +2,7 @@ import { Injectable } from "@nestjs/common";
 
 import { ConfigService } from "@nestjs/config";
 
-import { sign, verify } from "jsonwebtoken";
+import { type JwtPayload, sign, verify } from "jsonwebtoken";
 
 @Injectable()
 export class JwtService {
@@ -24,7 +24,7 @@ export class JwtService {
     return sign(payload, secret, opt);
   }
 
-  public verifyToken(token: string): Promise<string> {
+  public verifyToken(token: string): Promise<string | JwtPayload> {
     return new Promise((res, rej) => {
       const secret = this.configService.get<string>("JWT_SECRET");
 
@@ -33,7 +33,7 @@ export class JwtService {
         return;
       }
 
-      res(String(verify(token, secret)));
+      res(verify(token, secret));
     });
   }
 }
