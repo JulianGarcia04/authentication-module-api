@@ -123,7 +123,7 @@ export class AuthController {
         id,
       },
       {
-        expiresIn: 60 * 60,
+        expiresIn: 60 * 60 * 24,
       },
     );
 

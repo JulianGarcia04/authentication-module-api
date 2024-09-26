@@ -44,6 +44,9 @@ export class UsersController {
       })
       .map((user) => {
         return this.usersMapper.parse({ ...user.data, id: user.id });
+      })
+      .filter((user) => {
+        return !user.isDelete;
       });
 
     return usersList;
@@ -57,7 +60,7 @@ export class UsersController {
       throw new HttpException(`User with id ${userID} was not find`, HttpStatus.NOT_FOUND);
     }
 
-    const user = await this.usersMapper.parseAsync(data).catch((err) => {
+    const user = await this.usersMapper.parseAsync({ ...data.data, id: data.id }).catch((err) => {
       console.error("Zod error: ", err);
 
       throw new HttpException(
@@ -83,9 +86,14 @@ export class UsersController {
         : { email: body.email, isDelete: false },
     );
 
-    const users = getUsers.filter(
-      (user) => user.exists && this.usersMapper.isFine({ ...user.data, id: user.id }),
-    );
+    const users = getUsers
+      .filter((user) => user.exists && this.usersMapper.isFine({ ...user.data, id: user.id }))
+      .map((user) => {
+        return this.usersMapper.parse({ ...user.data, id: user.id });
+      })
+      .filter((user) => {
+        return !user.isDelete;
+      });
 
     if (users.length >= 1) {
       throw new HttpException(

@@ -21,7 +21,7 @@ export class CheckAuthMiddleware implements NestMiddleware {
   public async use(req: RequestProxy, res: Response, next: NextFunction): Promise<void> {
     const headers = req.headers;
 
-    const authorization = headers.get("authorization");
+    const authorization: string = headers["authorization"];
 
     if (!authorization) {
       throw new HttpException("The authorization header is required", HttpStatus.UNAUTHORIZED);
@@ -56,12 +56,22 @@ export class CheckAuthMiddleware implements NestMiddleware {
       );
     });
 
-    const checkedUser = await this.usersMapper.parseAsync(user).catch((err) => {
-      throw new HttpException(
-        `Error to check the user structure. Error: ${err}`,
-        HttpStatus.UNAUTHORIZED,
-      );
-    });
+    if (!user.exists) {
+      throw new HttpException(`Current user no found.`, HttpStatus.NOT_FOUND);
+    }
+
+    const checkedUser = await this.usersMapper
+      .parseAsync({ ...user.data, id: user.id })
+      .catch((err) => {
+        throw new HttpException(
+          `Error to check the user structure. Error: ${err}`,
+          HttpStatus.UNAUTHORIZED,
+        );
+      });
+
+    if (checkedUser.isDelete) {
+      throw new HttpException("User was deleted", HttpStatus.FORBIDDEN);
+    }
 
     req.user = checkedUser;
 

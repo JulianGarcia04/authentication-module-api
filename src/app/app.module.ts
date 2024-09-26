@@ -7,6 +7,7 @@ import { ConfigModule } from "@nestjs/config";
 import { EnvSchema } from "src/env";
 import { CheckAuthMiddleware } from "src/checkAuth.middleware";
 import { JwtService } from "src/providers/jwt";
+import { FavoritesModule } from "./favorites/favorites.module";
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { JwtService } from "src/providers/jwt";
         return EnvSchema.parse(config);
       },
     }),
+    FavoritesModule,
   ],
   providers: [
     {
@@ -30,7 +32,7 @@ import { JwtService } from "src/providers/jwt";
 })
 export class AppModule implements NestModule {
   public configure(consumer: MiddlewareConsumer): void {
-    consumer.apply(CheckAuthMiddleware).forRoutes({
+    consumer.apply(CheckAuthMiddleware).forRoutes("favorites", {
       path: "users/*",
       method: RequestMethod.GET,
     });
