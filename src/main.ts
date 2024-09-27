@@ -15,8 +15,7 @@ async function bootstrap(): Promise<void> {
     .setTitle("Authentication module")
     .setDescription("Authentication module with 2FA")
     .setVersion("1.0")
-    .addTag("auth")
-    .addTag("users")
+    .addBearerAuth()
     .build();
   patchNestjsSwagger();
   const document = SwaggerModule.createDocument(app, config);

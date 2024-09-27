@@ -2,8 +2,10 @@ import { Controller, Delete, Param, Post } from "@nestjs/common";
 import { CurrentUser } from "src/decorators/CurrentUser";
 import { User } from "../users/users.schema";
 import { FavoritesService } from "./favorites.service";
-import { ApiCreatedResponse } from "@nestjs/swagger";
+import { ApiBearerAuth, ApiCreatedResponse, ApiTags } from "@nestjs/swagger";
 
+@ApiTags("favorites movies")
+@ApiBearerAuth()
 @Controller("favorites")
 export class FavoritesController {
   public constructor(private readonly favoritesService: FavoritesService) {}

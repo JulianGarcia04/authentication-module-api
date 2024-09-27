@@ -22,8 +22,9 @@ import { UsersService } from "./users.service";
 import { UsersMapper } from "./users.mapper";
 
 import { BcryptService } from "src/providers/bcrypt";
-import { ApiCreatedResponse } from "@nestjs/swagger";
+import { ApiBearerAuth, ApiCreatedResponse, ApiTags } from "@nestjs/swagger";
 
+@ApiTags("users")
 @Controller("users")
 @UsePipes(ZodValidationPipe)
 export class UsersController {
@@ -36,10 +37,13 @@ export class UsersController {
   ) {}
 
   @Get("")
+  @HttpCode(200)
   @ApiCreatedResponse({
     type: UserDto,
     isArray: true,
+    status: 200,
   })
+  @ApiBearerAuth()
   public async find(@Query() query?: FindUsersDto): Promise<User[]> {
     const usersListProxy = await this.usersService.find(query);
 
@@ -60,7 +64,9 @@ export class UsersController {
   @Get(":id")
   @ApiCreatedResponse({
     type: UserDto,
+    status: 200,
   })
+  @ApiBearerAuth()
   public async findByID(@Param("id") userID: string): Promise<UserDto> {
     const data = await this.usersService.findById(userID);
 
@@ -89,6 +95,8 @@ export class UsersController {
   @HttpCode(202)
   @ApiCreatedResponse({
     type: String,
+    description: "User id",
+    status: 202,
   })
   public async create(@Body() body: UserDto): Promise<string> {
     const getUsers = await this.usersService.find(
@@ -122,8 +130,11 @@ export class UsersController {
   }
 
   @Put("update/:id")
+  @HttpCode(202)
+  @ApiBearerAuth()
   @ApiCreatedResponse({
-    type: String,
+    type: "User was update correctly",
+    status: 202,
   })
   public async update(@Param("id") userID: string, @Body() body: UpdateUserDto): Promise<string> {
     await this.usersService.update(userID, body);
@@ -132,8 +143,11 @@ export class UsersController {
   }
 
   @Delete("delete/:id")
+  @HttpCode(200)
+  @ApiBearerAuth()
   @ApiCreatedResponse({
-    type: String,
+    type: "User was delete correctly",
+    status: 200,
   })
   public async delete(@Param("id") userID: string): Promise<string> {
     await this.usersService.update(userID, { isDelete: true });

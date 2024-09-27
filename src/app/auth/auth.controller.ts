@@ -13,8 +13,9 @@ import { BcryptService } from "src/providers/bcrypt";
 import { UsersMapper } from "../users/users.mapper";
 import { TwilioService } from "src/providers/twilio";
 import { JwtService } from "src/providers/jwt";
-import { ApiCreatedResponse } from "@nestjs/swagger";
+import { ApiCreatedResponse, ApiTags } from "@nestjs/swagger";
 
+@ApiTags("auth")
 @Controller("auth")
 @UsePipes(ZodValidationPipe)
 export class AuthController {
