@@ -37,4 +37,22 @@ export class UpdateUserDto extends createZodDto(
   UserSchema.omit({ email: true, createAt: true, id: true }).partial(),
 ) {}
 
-export class FindUsersDto extends createZodDto(UserSchema.omit({ id: true }).partial()) {}
+export class FindUsersDto extends createZodDto(
+  UserSchema.omit({ id: true })
+    .merge(
+      z.object({
+        isDelete: z.preprocess((val) => {
+          if (typeof val !== "string") {
+            return;
+          }
+
+          if (!val || val === "false") {
+            return false;
+          }
+
+          return true;
+        }, z.boolean()),
+      }),
+    )
+    .partial(),
+) {}
