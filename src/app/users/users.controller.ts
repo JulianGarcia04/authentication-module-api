@@ -137,7 +137,16 @@ export class UsersController {
     status: 202,
   })
   public async update(@Param("id") userID: string, @Body() body: UpdateUserDto): Promise<string> {
-    await this.usersService.update(userID, body);
+    const encryptPassword = body.password ? this.bcryptService.encrypt(body.password) : undefined;
+
+    const payload = encryptPassword
+      ? {
+          ...body,
+          password: encryptPassword,
+        }
+      : body;
+
+    await this.usersService.update(userID, payload);
 
     return "User was update correctly";
   }
