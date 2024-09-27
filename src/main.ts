@@ -4,11 +4,13 @@ import type { NestExpressApplication } from "@nestjs/platform-express";
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
 import { patchNestjsSwagger } from "@anatine/zod-nestjs";
 import { Logger } from "@nestjs/common";
+import { BodyLoggerInterceptor } from "./interceptors/BodyLogger.interceptor";
 
 async function bootstrap(): Promise<void> {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
     cors: true,
   });
+  app.useGlobalInterceptors(new BodyLoggerInterceptor());
   const globalPrefix = "api";
   app.setGlobalPrefix(globalPrefix);
   const config = new DocumentBuilder()
