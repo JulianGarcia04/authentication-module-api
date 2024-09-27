@@ -7,7 +7,7 @@ settings:
 dependencies:
   '@anatine/zod-nestjs':
     specifier: ^2.0.9
-    version: 2.0.9(@anatine/zod-openapi@2.2.6)(@nestjs/common@10.4.1)(@nestjs/swagger@7.4.0)(openapi3-ts@4.4.0)(zod@3.23.8)
+    version: 2.0.9(@anatine/zod-openapi@2.2.6)(@nestjs/common@10.4.1)(@nestjs/swagger@7.4.2)(openapi3-ts@4.4.0)(zod@3.23.8)
   '@anatine/zod-openapi':
     specifier: ^2.2.6
     version: 2.2.6(openapi3-ts@4.4.0)(zod@3.23.8)
@@ -26,6 +26,9 @@ dependencies:
   '@nestjs/platform-express':
     specifier: ^10.4.1
     version: 10.4.1(@nestjs/common@10.4.1)(@nestjs/core@10.4.1)
+  '@nestjs/swagger':
+    specifier: ^7.4.2
+    version: 7.4.2(@nestjs/common@10.4.1)(@nestjs/core@10.4.1)(reflect-metadata@0.1.14)
   '@types/bcrypt':
     specifier: ^5.0.2
     version: 5.0.2
@@ -138,7 +141,7 @@ packages:
       '@jridgewell/trace-mapping': 0.3.25
     dev: true
 
-  /@anatine/zod-nestjs@2.0.9(@anatine/zod-openapi@2.2.6)(@nestjs/common@10.4.1)(@nestjs/swagger@7.4.0)(openapi3-ts@4.4.0)(zod@3.23.8):
+  /@anatine/zod-nestjs@2.0.9(@anatine/zod-openapi@2.2.6)(@nestjs/common@10.4.1)(@nestjs/swagger@7.4.2)(openapi3-ts@4.4.0)(zod@3.23.8):
     resolution: {integrity: sha512-XEK+7wMXAxc4tOkzOpH/vav1MVZrVYeOwKpXmn7aFiTUoB08G1FzAP7rDQ90ZrIFOGSoC0hpJA9izPQxBRAIDg==}
     peerDependencies:
       '@anatine/zod-openapi': ^2.0.1
@@ -149,7 +152,7 @@ packages:
     dependencies:
       '@anatine/zod-openapi': 2.2.6(openapi3-ts@4.4.0)(zod@3.23.8)
       '@nestjs/common': 10.4.1(reflect-metadata@0.1.14)(rxjs@7.8.1)
-      '@nestjs/swagger': 7.4.0(@nestjs/common@10.4.1)(@nestjs/core@10.4.1)(reflect-metadata@0.1.14)
+      '@nestjs/swagger': 7.4.2(@nestjs/common@10.4.1)(@nestjs/core@10.4.1)(reflect-metadata@0.1.14)
       openapi3-ts: 4.4.0
       ts-deepmerge: 6.2.1
       zod: 3.23.8
@@ -1139,8 +1142,8 @@ packages:
       - chokidar
     dev: true
 
-  /@nestjs/swagger@7.4.0(@nestjs/common@10.4.1)(@nestjs/core@10.4.1)(reflect-metadata@0.1.14):
-    resolution: {integrity: sha512-dCiwKkRxcR7dZs5jtrGspBAe/nqJd1AYzOBTzw9iCdbq3BGrLpwokelk6lFZPe4twpTsPQqzNKBwKzVbI6AR/g==}
+  /@nestjs/swagger@7.4.2(@nestjs/common@10.4.1)(@nestjs/core@10.4.1)(reflect-metadata@0.1.14):
+    resolution: {integrity: sha512-Mu6TEn1M/owIvAx2B4DUQObQXqo2028R2s9rSZ/hJEgBK95+doTwS0DjmVA2wTeZTyVtXOoN7CsoM5pONBzvKQ==}
     peerDependencies:
       '@fastify/static': ^6.0.0 || ^7.0.0
       '@nestjs/common': ^9.0.0 || ^10.0.0
@@ -1162,7 +1165,7 @@ packages:
       '@nestjs/mapped-types': 2.0.5(@nestjs/common@10.4.1)(reflect-metadata@0.1.14)
       js-yaml: 4.1.0
       lodash: 4.17.21
-      path-to-regexp: 3.2.0
+      path-to-regexp: 3.3.0
       reflect-metadata: 0.1.14
       swagger-ui-dist: 5.17.14
     dev: false
@@ -4979,6 +4982,10 @@ packages:
 
   /path-to-regexp@3.2.0:
     resolution: {integrity: sha512-jczvQbCUS7XmS7o+y1aEO9OBVFeZBQ1MDSEqmO7xSoPgOPoowY/SxLpZ6Vh97/8qHZOteiCKb7gkG9gA2ZUxJA==}
+
+  /path-to-regexp@3.3.0:
+    resolution: {integrity: sha512-qyCH421YQPS2WFDxDjftfc1ZR5WKQzVzqsp4n9M2kQhVOo/ByahFoUNJfl58kOcEGfQ//7weFTDhm+ss8Ecxgw==}
+    dev: false
 
   /path-type@4.0.0:
     resolution: {integrity: sha512-gDKb8aZMDeD/tZWs9P6+q0J9Mwkdl6xMV8TjnGP3qJVJ06bdMgkbBlLU8IdfOsIsFz2BW1rNVT3XuNEl8zPAvw==}

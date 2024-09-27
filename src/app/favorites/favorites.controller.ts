@@ -2,12 +2,16 @@ import { Controller, Delete, Param, Post } from "@nestjs/common";
 import { CurrentUser } from "src/decorators/CurrentUser";
 import { User } from "../users/users.schema";
 import { FavoritesService } from "./favorites.service";
+import { ApiCreatedResponse } from "@nestjs/swagger";
 
 @Controller("favorites")
 export class FavoritesController {
   public constructor(private readonly favoritesService: FavoritesService) {}
 
   @Post("add/:movieID")
+  @ApiCreatedResponse({
+    type: String,
+  })
   public async addToFavorites(
     @Param("movieID") movieID: string,
     @CurrentUser() currentUser: User,
@@ -18,6 +22,9 @@ export class FavoritesController {
   }
 
   @Delete("delete/:movieID")
+  @ApiCreatedResponse({
+    type: String,
+  })
   public async deleteFromFavorites(
     @Param("movieID") movieID: string,
     @CurrentUser() currentUser: User,

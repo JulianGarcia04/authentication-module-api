@@ -22,6 +22,7 @@ import { UsersService } from "./users.service";
 import { UsersMapper } from "./users.mapper";
 
 import { BcryptService } from "src/providers/bcrypt";
+import { ApiCreatedResponse } from "@nestjs/swagger";
 
 @Controller("users")
 @UsePipes(ZodValidationPipe)
@@ -35,6 +36,10 @@ export class UsersController {
   ) {}
 
   @Get("")
+  @ApiCreatedResponse({
+    type: UserDto,
+    isArray: true,
+  })
   public async find(@Query() query?: FindUsersDto): Promise<User[]> {
     const usersListProxy = await this.usersService.find(query);
 
@@ -53,6 +58,9 @@ export class UsersController {
   }
 
   @Get(":id")
+  @ApiCreatedResponse({
+    type: UserDto,
+  })
   public async findByID(@Param("id") userID: string): Promise<UserDto> {
     const data = await this.usersService.findById(userID);
 
@@ -79,6 +87,9 @@ export class UsersController {
 
   @Post("create")
   @HttpCode(202)
+  @ApiCreatedResponse({
+    type: String,
+  })
   public async create(@Body() body: UserDto): Promise<string> {
     const getUsers = await this.usersService.find(
       body.phone
@@ -111,6 +122,9 @@ export class UsersController {
   }
 
   @Put("update/:id")
+  @ApiCreatedResponse({
+    type: String,
+  })
   public async update(@Param("id") userID: string, @Body() body: UpdateUserDto): Promise<string> {
     await this.usersService.update(userID, body);
 
@@ -118,6 +132,9 @@ export class UsersController {
   }
 
   @Delete("delete/:id")
+  @ApiCreatedResponse({
+    type: String,
+  })
   public async delete(@Param("id") userID: string): Promise<string> {
     await this.usersService.update(userID, { isDelete: true });
 

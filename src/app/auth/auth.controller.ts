@@ -4,15 +4,16 @@ import { HttpException, HttpStatus } from "@nestjs/common";
 import { ZodValidationPipe } from "@anatine/zod-nestjs";
 import {
   AuthLoginByEmailDto,
+  AuthLoginByEmailResponse,
   AuthLoginByVerifyCodeDto,
-  type AuthLoginByEmailResponse,
   AuthLoginByVerifyCodeDesencryptPayload,
-  type AuthLoginByVerifyCodeResponse,
+  AuthLoginByVerifyCodeResponse,
 } from "./auth.schema";
 import { BcryptService } from "src/providers/bcrypt";
 import { UsersMapper } from "../users/users.mapper";
 import { TwilioService } from "src/providers/twilio";
 import { JwtService } from "src/providers/jwt";
+import { ApiCreatedResponse } from "@nestjs/swagger";
 
 @Controller("auth")
 @UsePipes(ZodValidationPipe)
@@ -27,6 +28,9 @@ export class AuthController {
 
   @Post("login")
   @HttpCode(202)
+  @ApiCreatedResponse({
+    type: AuthLoginByEmailResponse,
+  })
   public async loginByEmail(@Body() body: AuthLoginByEmailDto): Promise<AuthLoginByEmailResponse> {
     const { email, with2FA, password } = body;
 
@@ -35,8 +39,6 @@ export class AuthController {
     if (checkUser.length !== 1) {
       throw new HttpException("User not found by email", HttpStatus.NOT_FOUND);
     }
-
-    console.log(checkUser);
 
     const currUserData = checkUser[0];
 
@@ -52,20 +54,28 @@ export class AuthController {
 
     const isCorrectPassword = password ? this.bcryptService.compare(password, user.password) : true;
 
+    if (!isCorrectPassword) {
+      throw new HttpException("Incorrect password", HttpStatus.BAD_REQUEST);
+    }
+
     const generate2FA =
-      with2FA && isCorrectPassword && user.phone
-        ? await this.twilioService.sendVerifyToken(user.phone)
-        : undefined;
+      with2FA && user.phone ? await this.twilioService.sendVerifyToken(user.phone) : undefined;
 
     const authStatus = generate2FA
       ? { valid: generate2FA.valid, status: generate2FA.status }
       : { valid: true };
 
     const token = this.jwtService.generateToken(
-      {
-        phone: user.phone,
-        id: user.id,
-      },
+      user.phone
+        ? {
+            phone: user.phone,
+            email: user.email,
+            id: user.id,
+          }
+        : {
+            email: user.email,
+            id: user.id,
+          },
       {
         expiresIn: 60 * 5,
       },
@@ -79,6 +89,9 @@ export class AuthController {
 
   @Post("login/verify")
   @HttpCode(202)
+  @ApiCreatedResponse({
+    type: AuthLoginByVerifyCodeResponse,
+  })
   public async loginByVerifyCode(
     @Body() body: AuthLoginByVerifyCodeDto,
   ): Promise<AuthLoginByVerifyCodeResponse> {
@@ -126,8 +139,6 @@ export class AuthController {
         expiresIn: 60 * 60 * 24,
       },
     );
-
-    console.log(user);
 
     return {
       authToken,
